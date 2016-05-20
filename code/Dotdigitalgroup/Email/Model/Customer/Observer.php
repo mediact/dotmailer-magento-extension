@@ -197,15 +197,13 @@ class Dotdigitalgroup_Email_Model_Customer_Observer
             $store     = Mage::app()->getStore($dataObject->getStoreId());
             $storeName = $store->getName();
             $website   = Mage::app()->getStore($store)->getWebsite();
-            $customerCollection  = Mage::getModel('customer/customer')->getCollection()
+            $customerCollection = Mage::getModel('customer/customer')
+                ->getCollection()
                 ->addAttributeToSelect('email')
                 ->addAttributeToFilter('entity_id', $customerId);
-
-            $customer = $customerCollection->getSelect()->limit(1)->getFirstItem();
-
-
-
-
+            $customerCollection->getSelect()->limit(1);
+            $customer = $customerCollection->getFirstItem();
+            
             //if api is not enabled
             if ( ! $website->getConfig(
                 Dotdigitalgroup_Email_Helper_Config::XML_PATH_CONNECTOR_API_ENABLED
